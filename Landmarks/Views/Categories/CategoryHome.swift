@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CategoryHome: View {
     @Environment(ModelData.self) var modelData
+    @State private var showingProfile = false
     
     var body: some View {
         NavigationView {
@@ -25,8 +26,19 @@ struct CategoryHome: View {
                 }
                 .listRowInsets(EdgeInsets())
             }
+            .listStyle(.inset)
             .navigationTitle("Featured")
-//            .listStyle(.inset)
+            .toolbar {
+                Button(action: {
+                    showingProfile.toggle()
+                }, label: {
+                    Label("User Profile", systemImage: "person.crop.circle")
+                })
+            }
+            .sheet(isPresented: $showingProfile, content: {
+                ProfileHost()
+                    .environment(modelData)
+            })
         }
     }
 }
